@@ -85,7 +85,6 @@ def main():
             break
         except Exception as e:
             print("La expresion dada no es valida, inserte una nueva.")
-            traceback.print_exception(e)
 
 
 def bisection(f, a: float, b: float, error: float, plt) -> (float, int):
