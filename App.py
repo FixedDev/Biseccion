@@ -1,5 +1,3 @@
-import traceback
-
 import sympy
 from sympy import parse_expr, lambdify, plot
 from sympy.abc import y
@@ -80,7 +78,6 @@ def main():
             break
         except Exception as e:
             print("La expresion dada no es valida, inserte una nueva.")
-            print(traceback.format_exception(e))
 
 
 def bisection(f, a: float, b: float, error: float, plt) -> (float, int):
@@ -89,8 +86,16 @@ def bisection(f, a: float, b: float, error: float, plt) -> (float, int):
 
     if f(b) * f(a) == 0:
         if f(b) == 0:
+            plt.plot(b, f(b), 'ro')
+            plt.annotate(f"({b}, {round(f(a), 6)})", (b, f(b)), xytext=(5, -20),
+                         textcoords='offset points', arrowprops=dict(arrowstyle='->'))
+
             return b, 1
         else:
+            plt.plot(a, f(a), 'ro')
+            plt.annotate(f"({a}, {round(f(a), 6)})", (a, f(a)), xytext=(5, -20),
+                         textcoords='offset points', arrowprops=dict(arrowstyle='->'))
+
             return a, 1
 
     curr_it = 0
@@ -110,6 +115,19 @@ def bisection(f, a: float, b: float, error: float, plt) -> (float, int):
             return c, curr_it
         elif f(c) * f(a) < 0:
             b = c
+        elif f(c) * f(a) == 0:
+            if f(c) == 0:
+                plt.plot(c, f(c), 'ro')
+                plt.annotate(f"({c}, {round(f(c), 6)})", (c, f(c)), xytext=(5, -20),
+                             textcoords='offset points', arrowprops=dict(arrowstyle='->'))
+
+                return c, 1
+            else:
+                plt.plot(a, f(a), 'ro')
+                plt.annotate(f"({aa}, {round(f(a), 6)})", (a, f(a)), xytext=(5, -20),
+                             textcoords='offset points', arrowprops=dict(arrowstyle='->'))
+
+                return a, 1
         else:
             a = c
 
