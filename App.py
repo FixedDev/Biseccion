@@ -1,13 +1,8 @@
 import traceback
 
 import sympy
-from matplotlib import animation
-from sympy import parse_expr, lambdify, symbols, Interval, Expr, plot
+from sympy import parse_expr, lambdify, plot
 from sympy.abc import y
-from sympy.plotting import PlotGrid
-from sympy.plotting.backends.base_backend import Plot
-from sympy.plotting.backends.matplotlibbackend import MatplotlibBackend
-from sympy import Point
 
 MAX_ITER = 100
 
@@ -85,11 +80,18 @@ def main():
             break
         except Exception as e:
             print("La expresion dada no es valida, inserte una nueva.")
+            print(traceback.format_exception(e))
 
 
 def bisection(f, a: float, b: float, error: float, plt) -> (float, int):
     if f(b) * f(a) > 0:
         raise ValueError("No existe una raiz en el intervalo dado")
+
+    if f(b) * f(a) == 0:
+        if f(b) == 0:
+            return b, 1
+        else:
+            return a, 1
 
     curr_it = 0
     last_val = 0
@@ -97,6 +99,9 @@ def bisection(f, a: float, b: float, error: float, plt) -> (float, int):
     while curr_it <= MAX_ITER:
         curr_it += 1
         c = (a + b) / 2
+
+        if c == 0:
+            raise ValueError("No se puede obtener una raiz en este intervalo.")
 
         if abs((c - last_val) / c) * 100 <= error:
             plt.plot(c,f(c), 'ro')
